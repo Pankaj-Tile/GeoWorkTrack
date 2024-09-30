@@ -1,5 +1,5 @@
 package com.smart.config;
-
+import com.smart.config.CustomAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -38,10 +38,24 @@ public class MyConfig extends WebSecurityConfigurerAdapter {
 		auth.authenticationProvider(authenticationProvider());
 	}
 
+	// @Override
+	// protected void configure(HttpSecurity http) throws Exception {
+	// 	http.authorizeRequests()
+    //     .antMatchers("/admin/**").hasRole("ADMIN")
+    //     .antMatchers("/user/**").hasRole("USER")
+    //     .antMatchers("/**").permitAll()
+    //     .and().formLogin().loginPage("/signin").defaultSuccessUrl("/redirect")
+    //     .and().csrf().disable();
+	// }
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").antMatchers("/user/**").hasRole("USER")
-				.antMatchers("/**").permitAll().and().formLogin().loginPage("/signin").and().csrf().disable();
-	}
+protected void configure(HttpSecurity http) throws Exception {
+    http.authorizeRequests()
+        .antMatchers("/admin/**").hasRole("ADMIN")
+        .antMatchers("/user/**").hasRole("USER")
+        .antMatchers("/**").permitAll()
+        .and().formLogin().loginPage("/signin")
+        .successHandler(new CustomAuthenticationSuccessHandler())
+        .and().csrf().disable();
+}
 
 }

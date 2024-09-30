@@ -1,96 +1,116 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:replace="base::layout(~{::section})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
 <head>
-<meta charset="ISO-8859-1">
-<title>Singup Page!</title>
+    <meta charset="ISO-8859-1">
+    <title>Signup Page</title>
 </head>
 <body>
-	<section>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-8 offset-md-2">
-					<div class="my-card mt-2">
-					<div th:if = "${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
-  						<p class="text-center" th:text="${session.message.content}"></p>
-  						<th:block th:text="${#session.removeAttribute('message')}"></th:block>
-					</div>
-						<div class="container text-center">
-							<img class="" style="width: 80px" src="" th:src="@{/image/signupphoto.png}">
-						</div>
-						<h1 class="text-center">Register Here</h1>
-						<form action="" th:action="@{/do_register}" method="post" th:object="${user}">
-							<!-- name field -->
-							<div class="mb-3">
-								<label for="name_field" class="form-label">Your
-									Name</label>
-									<input 
-										name="username"
-										type="text" 
-										class="form-control"
-										id="name_field" 
-										aria-describedby="emailHelp" 
-										placeholder="Enter Here"
-										required="required"
-										th:value="${user.username}"/>
-								
-							</div>
-							<!-- Email field -->
-							<div class="mb-3">
-								<label for="email_field" class="form-label">Your
-									Email</label>
-									<input 
-										name="email"
-										type="email" 
-										class="form-control"
-										id="email_field" 
-										aria-describedby="emailHelp" 
-										placeholder="Enter Here"
-										required="required"
-										th:value="${user.email}"/>
-								
-							</div>
-							<!-- Password field -->
-							<div class="mb-3">
-								<label for="password_field" class="form-label">Your
-									Password</label>
-									<input 
-										name="password"
-										type="password" 
-										class="form-control"
-										id="password_field" 
-										aria-describedby="emailHelp" 
-										placeholder="Enter Here"
-										required="required"
-										/>
-								
-							</div>
-							<!-- About Field -->
-							<div class="form-group">
-								<textarea name="about" th:value="${user.about}" placeholder="Enter About Yourself"  rows="4" class="form-control"></textarea>
-							</div>
-							<!-- term and condition agreement -->
-							<div class="form-group form-check r">
-								<input type="checkbox"
-								name="agreement"
-								class="form-check-input"
-								id="agreement" />
-								<label for="agreement">Accept terms and condition</label>
-							</div>
-							<br>
-							<div class="container text-center">
-								<button type="submit" class="btn bg-primary text-white">
-									Submit
-								</button>
-								<button type="reset" class="btn bg-warning text-white">
-									Reset
-								</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="my-card mt-2">
+                        <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+                            <p class="text-center" th:text="${session.message.content}"></p>
+                            <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+                        </div>
+                        <div class="container text-center">
+                            <img class="" style="width: 80px" th:src="@{/image/signupphoto.png}" alt="Signup Photo">
+                        </div>
+                        <h1 class="text-center">Register Here</h1>
+                        <form action="#" th:action="@{/do_register}" method="post" enctype="multipart/form-data" th:object="${user}">
+                            <!-- Username field -->
+                            <div class="mb-3">
+                                <label for="username_field" class="form-label">Your Name</label>
+                                <input 
+                                    name="username"
+                                    type="text"
+                                    class="form-control"
+                                    id="username_field"
+                                    placeholder="Enter your name"
+                                    required="required"
+                                    th:value="${user.username}"/>
+                            </div>
+
+                            <!-- Email field -->
+                            <div class="mb-3">
+                                <label for="email_field" class="form-label">Your Email</label>
+                                <input 
+                                    name="email"
+                                    type="email"
+                                    class="form-control"
+                                    id="email_field"
+                                    placeholder="Enter your email"
+                                    required="required"
+                                    th:value="${user.email}"/>
+                            </div>
+
+                            <!-- image -->
+                            <div class="custom-file">
+                                <p class=" mt-3">
+                                    Choose Your Image: <input type="file" name="user.photoUser" required="required" />
+                                </p>
+                            </div>
+                            <!-- Department field -->
+                            <div class="mb-3">
+                                <label for="department_field" class="form-label">Your Department</label>
+                                <input 
+                                    name="department"
+                                    type="text"
+                                    class="form-control"
+                                    id="department_field"
+                                    placeholder="Enter your department"
+                                    required="required"
+                                    th:value="${user.department}"/>
+                            </div>
+
+                            <!-- Post field -->
+                            <div class="mb-3">
+                                <label for="post_field" class="form-label">Your Post</label>
+                                <input 
+                                    name="post"
+                                    type="text"
+                                    class="form-control"
+                                    id="post_field"
+                                    placeholder="Enter your post"
+                                    required="required"
+                                    th:value="${user.post}"/>
+                            </div>
+
+                            <!-- Password field -->
+                            <div class="mb-3">
+                                <label for="password_field" class="form-label">Your Password</label>
+                                <input 
+                                    name="password"
+                                    type="password"
+                                    class="form-control"
+                                    id="password_field"
+                                    placeholder="Enter your password"
+                                    required="required"/>
+                            </div>
+
+                            <!-- Terms and conditions agreement -->
+                            <div class="form-group form-check">
+                                <input type="checkbox"
+                                    name="agreement"
+                                    class="form-check-input"
+                                    id="agreement"/>
+                                <label for="agreement" class="form-check-label">Accept terms and conditions</label>
+                            </div>
+                            <br>
+                            <div class="container text-center">
+                                <button type="submit" class="btn bg-primary text-white">
+                                    Submit
+                                </button>
+                                <button type="reset" class="btn bg-warning text-white">
+                                    Reset
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
 </html>

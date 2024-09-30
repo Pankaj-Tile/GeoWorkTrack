@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="admin/base::layout(~{::section})">
+<head>
+<meta charset="ISO-8859-1">
+<title>This is profile</title>
+
+
+</head>
+<body>
+	<section>
+		<div class="container">
+			<div class="card">
+				<div class="card-body my-5">
+					<div class="container text-center">
+						<img style="height: 200px; width: 200px"
+							class="my_profile_picture" alt="profile_image"
+							th:src="@{'/uploads/userPhoto/'+${user.photoURL}}">
+					</div>
+					<h1
+						class="text-center mt-3 text-secondary font-italic font-weight-light">
+						Start Adding Your Contact on Cloud..</h1>
+					
+						
+				</div>
+				<div class="container">
+					<h1>Admin Dashboard</h1>
+					<a href="/admin/createGeofence" class="btn btn-primary">New Geofence</a>
+				</div>
+			</div>
+		</div>
+		<script>
+			$(document).ready(() => {
+				$(".item").removeClass("acitve");
+				$("#home-link").addclass("active");
+			});
+		</script>
+
+	</section>
+
+</body>
+</html>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:replace="normal/base::layout(~{::section})">
+	th:replace="admin/base::layout(~{::section})">
 <head>
 <meta charset="ISO-8859-1">
-<title>This is the profile update page</title>
+<title>This is profile update page</title>
 </head>
 <body>
 	<section>
@@ -14,10 +14,8 @@
 					<div class="container text-center">
 						<img style="height: 200px; width: 200px"
 							class="my_profile_picture" alt="profile_image"
-							th:src="@{'/uploads/userPhoto/'+${user.photoURL}}">
-							
+							th:src="@{'/image/'+${user.photoURL}}">
 					</div>
-					
 					<h1 class="text-center mt-3" th:text="${user.username}"></h1>
 
 					<table class="table">

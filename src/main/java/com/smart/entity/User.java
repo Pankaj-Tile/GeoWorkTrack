@@ -26,11 +26,11 @@ public class User {
 	private String email;
 	private String photoURL;
 	@Column(length = 500)
-	private String about;
+	private String department;
 	private String role;
+	private String post;
 	private Boolean enable;
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	private List<Contact> contacts = new ArrayList<>();
+
 
 	/**
 	 * 
@@ -40,26 +40,17 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @param userId
-	 * @param username
-	 * @param password
-	 * @param email
-	 * @param photoURL
-	 * @param about
-	 * @param role
-	 * @param enable
-	 */
-	public User(Integer userId, String username, String password, String email, String photoURL, String about,
-			String role, Boolean enable) {
-		super();
+	
+	public User(Integer userId, String username, String password, String email, String photoURL, String department,
+			String role, String post, Boolean enable) {
 		this.userId = userId;
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.photoURL = photoURL;
-		this.about = about;
+		this.department = department;
 		this.role = role;
+		this.post = post;
 		this.enable = enable;
 	}
 
@@ -136,17 +127,7 @@ public class User {
 	/**
 	 * @return the about
 	 */
-	public String getAbout() {
-		return about;
-	}
-
-	/**
-	 * @param about the about to set
-	 */
-	public void setAbout(String about) {
-		this.about = about;
-	}
-
+	
 	/**
 	 * @return the role
 	 */
@@ -178,21 +159,27 @@ public class User {
 	/**
 	 * @return the contacts
 	 */
-	public List<Contact> getContacts() {
-		return contacts;
+	
+
+
+
+	public String getDepartment() {
+		return department;
 	}
 
-	/**
-	 * @param contacts the contacts to set
-	 */
-	public void setContacts(List<Contact> contacts) {
-		this.contacts = contacts;
+
+	public void setDepartment(String department) {
+		this.department = department;
 	}
 
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", email=" + email
-				+ ", photoURL=" + photoURL + ", about=" + about + ", role=" + role + ", enable=" + enable + "]";
+
+	public String getPost() {
+		return post;
+	}
+
+
+	public void setPost(String post) {
+		this.post = post;
 	}
 
 }

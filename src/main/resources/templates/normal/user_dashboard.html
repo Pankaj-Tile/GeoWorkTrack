@@ -1,25 +1,240 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+      th:replace="normal/base::layout(~{::section})">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>This is home page</title>
+
+    <!-- Include jQuery before your custom script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        var socket;
+        var watchId;
+        var isSharingLocation = false;
+
+        function startWebSocketConnection() {
+            socket = new WebSocket('ws://localhost:8080/live-location'); // Adjust WebSocket URL
+
+            socket.onopen = function() {
+                console.log("WebSocket connection established.");
+            };
+
+            socket.onmessage = function(event) {
+                console.log("Received message: " + event.data);
+            };
+
+            socket.onclose = function() {
+                console.log("WebSocket connection closed.");
+            };
+
+            socket.onerror = function(error) {
+                console.error("WebSocket error: " + error.message);
+            };
+        }
+
+        function startSharingLocation(userId) {
+            if ("geolocation" in navigator) {
+                watchId = navigator.geolocation.watchPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    var currentDate = new Date();
+
+                    var locationData = {
+                        userId: userId,  // Get userId from Thymeleaf
+                        latitude: lat,
+                        longitude: lon,
+                        timestamp: currentDate.toISOString()
+                    };
+
+                    if (socket.readyState === WebSocket.OPEN) {
+                        socket.send(JSON.stringify(locationData));
+                    }
+                }, function(error) {
+                    console.error("Error getting location: ", error.message);
+                    alert("Error getting location: " + error.message);
+                }, {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                });
+
+                isSharingLocation = true;
+                document.getElementById("toggleButton").textContent = 'Stop Sharing Location';
+            } else {
+                alert("Geolocation is not available in this browser.");
+            }
+        }
+
+        function stopSharingLocation() {
+            if (isSharingLocation) {
+                navigator.geolocation.clearWatch(watchId);
+                isSharingLocation = false;
+                document.getElementById("toggleButton").textContent = 'Start Sharing Location';
+            }
+        }
+
+        function toggleLocationSharing(userId) {
+            if (isSharingLocation) {
+                stopSharingLocation();
+            } else {
+                startSharingLocation(userId);
+            }
+        }
+
+        window.onload = function() {
+            startWebSocketConnection();  // Start WebSocket connection when the page loads
+        };
+    </script>
+</head>
+<body>
+    <section>
+        <div class="container">
+            <div class="card">
+                <div class="card-body my-5">
+                    <div class="container text-center">
+                        <img style="height: 200px; width: 200px" class="my_profile_picture" alt="profile_image"
+                             th:src="@{'/uploads/userPhoto/'+${user.photoURL}}">
+                    </div>
+
+                    <h1 class="text-center mt-3 text-secondary font-italic font-weight-light">
+                        Welcome, <span th:text="${user.username}"></span>!
+                    </h1>
+
+                    <h1>Location Sharing</h1>
+
+                    <button id="toggleButton" onclick="toggleLocationSharing([[${user.userId}]])">
+                        Start Sharing Location
+                    </button>
+
+                    <p>Sharing location for: [[${user.username}]]</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Corrected script with jQuery functionality
+        $(document).ready(function() {
+            $(".item").removeClass("active");
+            $("#home-link").addClass("active");
+        });
+    </script>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	th:replace="normal/base::layout(~{::section})">
 <head>
 <meta charset="ISO-8859-1">
-<title>This is the About</title>
+<title>This is home page</title>
+<script>
+	var socket;
+	var watchId;
+	var isSharingLocation = false;
+
+	function startWebSocketConnection() {
+		socket = new WebSocket('ws://localhost:8080/live-location'); // Adjust the WebSocket URL
+
+		socket.onopen = function() {
+			console.log("WebSocket connection established.");
+		};
+
+		socket.onmessage = function(event) {
+			console.log("Received message: " + event.data);
+		};
+
+		socket.onclose = function() {
+			console.log("WebSocket connection closed.");
+		};
+
+		socket.onerror = function(error) {
+			console.error("WebSocket error: " + error.message);
+		};
+	}
+
+	function startSharingLocation(userId) {
+		if ("geolocation" in navigator) {
+			watchId = navigator.geolocation.watchPosition(function(position) {
+				var lat = position.coords.latitude;
+				var lon = position.coords.longitude;
+				var currentDate = new Date();
+
+				var locationData = {
+					userId: userId,  // Get userId from Thymeleaf
+					latitude: lat,
+					longitude: lon,
+					timestamp: currentDate.toISOString()
+				};
+
+				if (socket.readyState === WebSocket.OPEN) {
+					socket.send(JSON.stringify(locationData));
+				}
+			}, function(error) {
+				console.error("Error getting location: ", error.message);
+				alert("Error getting location: " + error.message);
+			}, {
+				enableHighAccuracy: true,
+				timeout: 10000,
+				maximumAge: 0
+			});
+
+			isSharingLocation = true;
+			document.getElementById("toggleButton").textContent = 'Stop Sharing Location';
+		} else {
+			alert("Geolocation is not available in this browser.");
+		}
+	}
+
+	function stopSharingLocation() {
+		if (isSharingLocation) {
+			navigator.geolocation.clearWatch(watchId);
+			isSharingLocation = false;
+			document.getElementById("toggleButton").textContent = 'Start Sharing Location';
+		}
+	}
+
+	function toggleLocationSharing(userId) {
+		if (isSharingLocation) {
+			stopSharingLocation();
+		} else {
+			startSharingLocation(userId);
+		}
+	}
+
+	window.onload = function() {
+		startWebSocketConnection();  // Start WebSocket connection when the page loads
+	};
+</script>
 </head>
 <body>
+
+
+
 	<section>
 		<div class="container">
 			<div class="card">
 				<div class="card-body my-5">
 					<div class="container text-center">
-						<img style="height: 200px; width: 200px"
-							class="my_profile_picture" alt="profile_image"
-							th:src="@{'/image/home.png'}">
-					</div>
-					<h1
+    <img style="height: 200px; width: 200px"
+         class="my_profile_picture" alt="profile_image"
+		 th:src="@{'/uploads/userPhoto/'+${user.photoURL}}">
+</div>
+
+
+					<h1 
 						class="text-center mt-3 text-secondary font-italic font-weight-light">
-						Start Adding Your Contact on Cloud..</h1>
-					<a  th:href="@{/user/add-contact}"  class="btn btn-primary mt-4 btn-block text-uppercase">Add
-						New Contact</a>
+						Start Adding Your Contact on Cloud.. <span th:text="${user.username}"></span> </h1>
+						
+						<h1>Location Sharing</h1>
+
+ 
+						<button id="toggleButton" onclick="toggleLocationSharing([[${user.userId}]])">Start Sharing Location</button>
+					
+						<p>Sharing location for: [[${user.username}]]</p>
+						
 						
 				</div>
 
@@ -35,4 +250,101 @@
 	</section>
 
 </body>
-</html>
+</html> -->
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/base::layout(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title>Start Sharing Location</title>
+    <script>
+        var socket;
+        var watchId;
+        var isSharingLocation = false;
+
+        function startWebSocketConnection() {
+            socket = new WebSocket('ws://localhost:8080/live-location'); // Adjust the WebSocket URL
+
+            socket.onopen = function() {
+                console.log("WebSocket connection established.");
+            };
+
+            socket.onmessage = function(event) {
+                console.log("Received message: " + event.data);
+            };
+
+            socket.onclose = function() {
+                console.log("WebSocket connection closed.");
+            };
+
+            socket.onerror = function(error) {
+                console.error("WebSocket error: " + error.message);
+            };
+        }
+
+        function startSharingLocation(userId) {
+            if ("geolocation" in navigator) {
+                watchId = navigator.geolocation.watchPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    var currentDate = new Date();
+
+                    var locationData = {
+                        userId: userId,  // Get userId from Thymeleaf
+                        latitude: lat,
+                        longitude: lon,
+                        timestamp: currentDate.toISOString()
+                    };
+
+                    if (socket.readyState === WebSocket.OPEN) {
+                        socket.send(JSON.stringify(locationData));
+                    }
+                }, function(error) {
+                    console.error("Error getting location: ", error.message);
+                    alert("Error getting location: " + error.message);
+                }, {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                });
+
+                isSharingLocation = true;
+                document.getElementById("toggleButton").textContent = 'Stop Sharing Location';
+            } else {
+                alert("Geolocation is not available in this browser.");
+            }
+        }
+
+        function stopSharingLocation() {
+            if (isSharingLocation) {
+                navigator.geolocation.clearWatch(watchId);
+                isSharingLocation = false;
+                document.getElementById("toggleButton").textContent = 'Start Sharing Location';
+            }
+        }
+
+        function toggleLocationSharing(userId) {
+            if (isSharingLocation) {
+                stopSharingLocation();
+            } else {
+                startSharingLocation(userId);
+            }
+        }
+
+        window.onload = function() {
+            startWebSocketConnection();  // Start WebSocket connection when the page loads
+        };
+    </script>
+</head>
+<body>
+
+    <h1>Location Sharing</h1>
+
+ 
+    <button id="toggleButton" onclick="toggleLocationSharing([[${user.userId}]])">Start Sharing Location</button>
+
+    <p>Sharing location for: [[${user.username}]]</p>
+
+</body>
+</html> -->
