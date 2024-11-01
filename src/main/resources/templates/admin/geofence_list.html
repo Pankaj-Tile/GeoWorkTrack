@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="admin/base::layout(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title>Show All Geofences</title>
+</head>
+<body>
+    <section>
+        <div class="card mr-5 ml-3">
+            <div class="card-body">
+                <h1 class="text-center">All Geofences</h1>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Geofence Name</th>
+                            <th scope="col">View</th>
+                            <th scope="col">Delete</th>
+                            <th scope="col">Update</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Iterate over the list of geofences -->
+                        <tr th:each="g : ${list.content}">
+                            <td th:text="${g.id}"></td>
+                            <td th:text="${g.geofenceplace}"></td>
+                            <td><a href="#" th:href="@{/admin/geofence/view/ + ${g.id}}" class="btn btn-primary btn-sm">View</a></td>
+                            <td>
+                                <a href="#" th:onclick="|deleteGeofence(${g.id})|" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                            <td>
+                                <form method="get" th:action="@{'/admin/update-geofence/'+${g.id}}">
+                                    <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Pagination Section -->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li th:if="${currentPage != 0}" class="page-item">
+                            <a class="page-link" th:href="@{/admin/show_geofence/{page}(page=${currentPage - 1})}">Previous</a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+                            th:classappend="${currentPage == i - 1 ? 'active' : ''}" class="page-item">
+                            <a class="page-link" th:href="@{/admin/show_geofence/{page}(page=${i - 1})}" 
+                            th:text="${i}"></a>
+                        <li th:if="${currentPage + 1 != totalPages}" class="page-item">
+                            <a class="page-link" th:href="@{/admin/show_geofence/{page}(page=${currentPage + 1})}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

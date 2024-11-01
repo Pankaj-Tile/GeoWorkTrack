@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    th:replace="admin/base::layout(~{::section})">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Update Geofence</title>
+</head>
+<body>
+<section>
+    <div class="container">
+        <div class="card">
+            <div class="card-body my-5">
+                <h2 class="text-center">Update Geofence</h2>
+                <!-- Form for updating the geofence, note 'th:action' for posting the form -->
+                <form method="post" th:action="@{'/admin/update-geofence/' + ${geofence.id}}">
+                    <div class="form-group">
+                        <label for="geofenceplace">Geofence Name:</label>
+                        <input type="text" class="form-control" id="geofenceplace" name="geofenceplace" 
+                               th:value="${geofence.geofenceplace}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="radius">Radius (in meters):</label>
+                        <input type="number" class="form-control" id="radius" name="radius" 
+                               th:value="${geofence.radius}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="latitude">Latitude:</label>
+                        <input type="number" class="form-control" id="latitude" name="latitude" 
+                               th:value="${geofence.latitude}" step="any" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="longitude">Longitude:</label>
+                        <input type="number" class="form-control" id="longitude" name="longitude" 
+                               th:value="${geofence.longitude}" step="any" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="officeHoursStart">Office Hours Start:</label>
+                        <input type="time" class="form-control" id="officeHoursStart" name="officeHoursStart" 
+                               th:value="${geofence.officeHoursStart}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="officeHoursEnd">Office Hours End:</label>
+                        <input type="time" class="form-control" id="officeHoursEnd" name="officeHoursEnd" 
+                               th:value="${geofence.officeHoursEnd}" required>
+                    </div>
+
+                    <button type="button" class="btn btn-secondary" onclick="getLocation()">Get Current Location</button>
+                    <button type="submit" class="btn btn-primary">Update Geofence</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    // Assign latitude and longitude to the form fields
+                    document.getElementById("latitude").value = position.coords.latitude;
+                    document.getElementById("longitude").value = position.coords.longitude;
+                    console.log("Latitude: " + position.coords.latitude + ", Longitude: " + position.coords.longitude);
+                }, function (error) {
+                    console.error("Error Code = " + error.code + " - " + error.message);
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+</section>
+</body>
+</html>

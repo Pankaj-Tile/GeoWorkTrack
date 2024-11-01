@@ -1,95 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/base::layout(~{::section})">
-<head>
-    <meta charset="UTF-8">
-    <title>Start Sharing Location</title>
-    <script>
-        var socket;
-        var watchId;
-        var isSharingLocation = false;
-
-        function startWebSocketConnection() {
-            socket = new WebSocket('ws://localhost:8080/live-location'); // Adjust the WebSocket URL
-
-            socket.onopen = function() {
-                console.log("WebSocket connection established.");
-            };
-
-            socket.onmessage = function(event) {
-                console.log("Received message: " + event.data);
-            };
-
-            socket.onclose = function() {
-                console.log("WebSocket connection closed.");
-            };
-
-            socket.onerror = function(error) {
-                console.error("WebSocket error: " + error.message);
-            };
-        }
-
-        function startSharingLocation(userId) {
-            if ("geolocation" in navigator) {
-                watchId = navigator.geolocation.watchPosition(function(position) {
-                    var lat = position.coords.latitude;
-                    var lon = position.coords.longitude;
-                    var currentDate = new Date();
-
-                    var locationData = {
-                        userId: userId,  // Get userId from Thymeleaf
-                        latitude: lat,
-                        longitude: lon,
-                        timestamp: currentDate.toISOString()
-                    };
-
-                    if (socket.readyState === WebSocket.OPEN) {
-                        socket.send(JSON.stringify(locationData));
-                    }
-                }, function(error) {
-                    console.error("Error getting location: ", error.message);
-                    alert("Error getting location: " + error.message);
-                }, {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
-                });
-
-                isSharingLocation = true;
-                document.getElementById("toggleButton").textContent = 'Stop Sharing Location';
-            } else {
-                alert("Geolocation is not available in this browser.");
-            }
-        }
-
-        function stopSharingLocation() {
-            if (isSharingLocation) {
-                navigator.geolocation.clearWatch(watchId);
-                isSharingLocation = false;
-                document.getElementById("toggleButton").textContent = 'Start Sharing Location';
-            }
-        }
-
-        function toggleLocationSharing(userId) {
-            if (isSharingLocation) {
-                stopSharingLocation();
-            } else {
-                startSharingLocation(userId);
-            }
-        }
-
-        window.onload = function() {
-            startWebSocketConnection();  // Start WebSocket connection when the page loads
-        };
-    </script>
-</head>
-<body>
-
-    <h1>Location Sharing</h1>
-
-    <!-- Using Thymeleaf to get userId from the model -->
-    <button id="toggleButton" onclick="toggleLocationSharing([[${user.userId}]])">Start Sharing Location</button>
-
-    <p>Sharing location for: [[${user.username}]]</p>
-
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Real-Time Employee Location Tracking</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    </head>
+    <body>
+        
+    </body>
 </html>

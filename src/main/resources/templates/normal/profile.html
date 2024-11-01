@@ -1,56 +1,45 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:replace="normal/base::layout(~{::section})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/base::layout(~{::section})">
 <head>
-<meta charset="ISO-8859-1">
-<title>This is the profile update page</title>
+    <meta charset="utf-8">
+    <title th:text="${title}">Profile Page</title>
 </head>
 <body>
-	<section>
-
-		<div class="container">
-			<div class="card">
-				<div class="card-body">
-					<div class="container text-center">
-						<img style="height: 200px; width: 200px"
-							class="my_profile_picture" alt="profile_image"
-							th:src="@{'/uploads/userPhoto/'+${user.photoURL}}">
-							
-					</div>
-					
-					<h1 class="text-center mt-3" th:text="${user.username}"></h1>
-
-					<table class="table">
-						<thead>
-							<tr>
-								<th scope="col">User Id</th>
-								<th scope="col">SCMUSER<span th:text="${user.userId}"></span></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="row">Email</th>
-								<td><span th:text="${user.email}"></span></td>
-							</tr>
-							<tr>
-								<th scope="row">Role</th>
-								<td><span th:text="${user.role}"></span></td>
-							</tr>
-							<!-- <tr>
-								<th scope="row">Account Active</th>
-								<td><span th:text="${user.enable}"></span></td>
-							</tr>
-							<tr>
-								<th scope="row">About</th>
-								<td><span th:text="${user.about}"></span></td>
-							</tr> -->
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-
-	</section>
-
+    <section>
+        <div class="container mt-5">
+            <h1 class="text-center">Profile Details</h1>
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center">
+                        <img th:src="@{/image/${user.photoURL}}" alt="Profile Image" class="rounded-circle" style="height: 150px; width: 150px;">
+                    </div>
+                    <h2 class="text-center mt-3" th:text="${user.username}">User Name</h2>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th scope="row">User ID</th>
+                                <td th:text="${user.userId}">12345</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Email</th>
+                                <td th:text="${user.email}">user@example.com</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Role</th>
+                                <td th:text="${user.role}">User</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Account Active</th>
+                                <td th:text="${user.enable}">Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a th:href="@{/user/settings}" class="btn btn-primary">Edit Profile</a>
+            </div>
+        </div>
+    </section>
 </body>
 </html>

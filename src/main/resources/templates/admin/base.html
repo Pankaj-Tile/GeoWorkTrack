@@ -55,7 +55,7 @@
 		<span onclick="toggleSidebar()" class="crossBtn">&times;</span> 
 		<a th:href="@{/admin/index}" class="item"><i class="fas fa-home"></i>Home</a> 
 		<!-- to add new geofence -->
-		<a th:href="@{/admin/geolist}" class="item"><i class="fas fa-id-card-alt"></i> Geo list</a> 
+		<a th:href="@{/admin/show_geofence/0}" class="item"><i class="fas fa-id-card-alt"></i> Geo list</a> 
 		<!-- to see all the geofence locations with view option to see locations also delete and update options-->
 		<a th:href="@{/admin/emplist}" class="item"><i class="fas fa-pencil-alt"></i> Emp List</a> 
 		<!-- to see all emplist with view option to see there performance also delete employee -->
@@ -104,24 +104,22 @@
 	<script type="text/javascript" th:src="@{/js/myjs.js}"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script>
-		function deleteContact(cid)
-		{
-			swal({
-				  title: "Are you sure?",
-				  text: "Do you Want Delete this Contact..",
-				  icon: "warning",
-				  buttons: true,
-				  dangerMode: true,
-				})
-				.then((willDelete) => {
-				  if (willDelete) {
-				    window.location="/user/delete/"+cid;
-				   
-				  } else {
-				    swal("Your Contact is Safe !!");
-				  }
-				});
-		}
+		 function deleteGeofence(geofenceId) {
+        swal({
+            title: "Are you sure?",
+            text: "Do you want to delete this Geofence?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                window.location = "/admin/delete-geofence/" + geofenceId;
+            } else {
+                swal("Your Geofence is safe!");
+            }
+        });
+    }
 	</script>
 </body>
 </html>

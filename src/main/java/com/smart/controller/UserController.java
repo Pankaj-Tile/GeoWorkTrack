@@ -27,9 +27,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 
+import com.smart.dao.GeofenceService;
 import com.smart.dao.UserRepository;
-
+import com.smart.entity.Geofence;
 import com.smart.entity.User;
 import com.smart.helper.MessageHelper;
 
@@ -40,6 +42,8 @@ public class UserController {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Autowired
 	private UserRepository repository;
+	 @Autowired
+    private GeofenceService geofenceService;
 
 	@ModelAttribute
 	public void addCommonData(Model model, Principal principal) {
@@ -53,6 +57,9 @@ public class UserController {
 	@RequestMapping("/index")
 	public String dashboard(Model model, Principal principal) {
 		model.addAttribute("title", "User Dashborad");
+		// Fetch all geofences and add to the model
+        List<Geofence> geofences = geofenceService.getAllGeofences();
+        model.addAttribute("geofences", geofences);
 		return "normal/user_dashboard";
 	}
 
