@@ -8,6 +8,57 @@
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     </head>
     <body>
-        
+        <script>
+    
+            var latitude = parseFloat([[${geofences[0].latitude}]]);
+       var longitude = parseFloat([[${geofences[0].longitude}]]);
+       var radius = parseFloat([[${geofences[0].radius}]]);
+       var latitudeA = parseFloat([[${geofences[0].latitudeA}]]);
+       var longitudeA = parseFloat([[${geofences[0].longitudeA}]]);
+       var latitudeB = parseFloat([[${geofences[0].latitudeB}]]);
+       var longitudeB = parseFloat([[${geofences[0].longitudseB}]]);
+       var latitudeC = parseFloat([[${geofences[0].latitudeC}]]);
+       var longitudeC = parseFloat([[${geofences[0].longitudeC}]]);
+       var latitudeD = parseFloat([[${geofences[0].latitudeD}]]);
+       var longitudeD = parseFloat([[${geofences[0].longitudeD}]]);
+       var geofenceCount = parseInt([[${geofenceCount}]]);
+       
+               console.log(latitudeA,latitudeD);
+               console.log('Geofence Place:', geofencePlace);
+          console.log('Latitudes and Longitudes:', latitude, longitude, latitudeA, longitudeA, latitudeB, longitudeB, latitudeC, longitudeC, latitudeD, longitudeD);
+          console.log('Radius:', radius);
+          console.log('Geofence Count:', geofenceCount);
+       
+          // Initialize the map
+          var map = L.map('map').setView([19.876, 75.343], 13);
+       
+          // Add OpenStreetMap tiles
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '© OpenStreetMap contributors'
+          }).addTo(map);
+       
+          // Add only the first geofence to the map if it exists
+          if (geofenceCount > 0) {
+              L.circle([latitude, longitude], {
+                  color: 'red',
+                  fillColor: '#f03',
+                  fillOpacity: 0.5,
+                  radius: radius // Use the radius value from the backend
+              }).addTo(map);
+       
+              // Add bounding box for the first geofence
+              var bounds = [
+                  [latitudeA, longitudeA],
+                  [latitudeB, longitudeB],
+                  [latitudeC, longitudeC],
+                  [latitudeD, longitudeD]
+              ];
+              L.polygon(bounds, {color: 'blue'}).addTo(map);
+          }
+       
+       
+         
+           </script>
+       
     </body>
 </html>

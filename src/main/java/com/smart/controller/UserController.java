@@ -35,6 +35,7 @@ import com.smart.entity.Geofence;
 import com.smart.entity.User;
 import com.smart.helper.MessageHelper;
 
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -59,7 +60,9 @@ public class UserController {
 		model.addAttribute("title", "User Dashborad");
 		// Fetch all geofences and add to the model
         List<Geofence> geofences = geofenceService.getAllGeofences();
-        model.addAttribute("geofences", geofences);
+        model.addAttribute("geofences", geofences); 
+		
+        model.addAttribute("geofenceCount", geofences.size()); 
 		return "normal/user_dashboard";
 	}
 
