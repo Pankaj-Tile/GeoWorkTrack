@@ -12,6 +12,9 @@ public class GeofenceService {
 
     @Autowired
     private GeofenceRepository geofenceRepository;
+    public Geofence getGeofenceById(Long id) { 
+        return geofenceRepository.findById(id) .orElseThrow(() -> new IllegalArgumentException("Invalid geofence Id:" + id));
+    }
     
     public List<Geofence> getAllGeofences() {
         return geofenceRepository.findAll();

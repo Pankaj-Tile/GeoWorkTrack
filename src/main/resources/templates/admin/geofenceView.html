@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="admin/base::layout(~{::section})">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Geofence Details</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+<section>
+    <div class="card">
+        <div class="card-body">
+            <h1 class="text-center mt-3" th:text="${user.username}"></h1>
+            <div id="statusMessage" style="color: red;"></div>
+            <div id="map" style="height: 400px;"></div>
+        </div>
+    </div>
+    <h1>Geofence Details</h1>
+    <table>
+        <tr>
+            <th>Geofence Place</th>
+            <td th:text="${geofence.geofenceplace}"></td>
+        </tr>
+        <tr>
+            <th>Latitude</th>
+            <td th:text="${geofence.latitude}"></td>
+        </tr>
+        <tr>
+            <th>Longitude</th>
+            <td th:text="${geofence.longitude}"></td>
+        </tr>
+        <tr>
+            <th>Radius</th>
+            <td th:text="${geofence.radius}"></td>
+        </tr>
+        <tr>
+            <th>Office Hours Start</th>
+            <td th:text="${geofence.officeHoursStart}"></td>
+        </tr>
+        <tr>
+            <th>Office Hours End</th>
+            <td th:text="${geofence.officeHoursEnd}"></td>
+        </tr>
+        <tr>
+            <th>Latitude A</th>
+            <td th:text="${geofence.latitudeA}"></td>
+        </tr>
+        <tr>
+            <th>Longitude A</th>
+            <td th:text="${geofence.longitudeA}"></td>
+        </tr>
+        <tr>
+            <th>Latitude B</th>
+            <td th:text="${geofence.latitudeB}"></td>
+        </tr>
+        <tr>
+            <th>Longitude B</th>
+            <td th:text="${geofence.longitudeB}"></td>
+        </tr>
+        <tr>
+            <th>Latitude C</th>
+            <td th:text="${geofence.latitudeC}"></td>
+        </tr>
+        <tr>
+            <th>Longitude C}</th>
+            <td th:text="${geofence.longitudeC}"></td>
+        </tr>
+        <tr>
+            <th>Latitude D</th>
+            <td th:text="${geofence.latitudeD}"></td>
+        </tr>
+        <tr>
+            <th>Longitude D}</th>
+            <td th:text="${geofence.longitudeD}"></td>
+        </tr>
+    </table>
+    <div id="geofencePlace" th:text="${geofence.geofenceplace}" style="display:none;"></div>
+
+    <script>
+        var latitude = /*[[${geofence.latitude}]]*/ 19.9975;
+        var longitude = /*[[${geofence.longitude}]]*/ 73.7898;
+        var latitudeA = /*[[${geofence.latitudeA}]]*/ 19.9980;
+        var longitudeA = /*[[${geofence.longitudeA}]]*/ 73.7890;
+        var latitudeB = /*[[${geofence.latitudeB}]]*/ 19.9980;
+        var longitudeB = /*[[${geofence.longitudeB}]]*/ 73.7906;
+        var latitudeC = /*[[${geofence.latitudeC}]]*/ 19.9970;
+        var longitudeC = /*[[${geofence.longitudeC}]]*/ 73.7906;
+        var latitudeD = /*[[${geofence.latitudeD}]]*/ 19.9970;
+        var longitudeD = /*[[${geofence.longitudeD}]]*/ 73.7890;
+        var geofencePlace = document.getElementById('geofencePlace').textContent;
+
+        var map = L.map('map').setView([latitude, longitude], 13); // Initialize map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Add a polygon representing the geofence
+        var bounds = [
+            [latitudeA, longitudeA],
+            [latitudeB, longitudeB],
+            [latitudeC, longitudeC],
+            [latitudeD, longitudeD]
+        ];
+        var polygon = L.polygon(bounds, {color: 'blue'}).addTo(map);
+
+        // Bind a popup to the polygon with the geofence place name
+        polygon.bindPopup("Geofence Place: " + geofencePlace).openPopup();
+
+        // WebSocket connection to receive and display locations
+        var socket;
+        var markers = {};
+
+        function connectWebSocket() {
+            // Initialize WebSocket
+            socket = new WebSocket("ws://localhost:8080/ws");
+            socket.onopen = function () {
+                console.log("WebSocket connection opened");
+                document.getElementById("statusMessage").textContent = "WebSocket connection successful!";
+            };
+            socket.onmessage = function (event) {
+                console.log("Message received from WebSocket:", event.data);
+                var data = JSON.parse(event.data);
+                if (data.message) {
+                    // Display SweetAlert message
+                    swal({
+                        title: "Alert",
+                        text: data.message,
+                        icon: "warning",
+                    });
+                } else {
+                    updateMarkers(data); // Update the map with location data
+                }
+            };
+            socket.onerror = function (error) {
+                console.error("WebSocket error:", error);
+                document.getElementById("statusMessage").textContent = "Error: WebSocket connection failed!";
+            };
+            socket.onclose = function (event) {
+                console.log("WebSocket connection closed", event);
+                document.getElementById("statusMessage").textContent = event.wasClean ? "WebSocket closed cleanly." : "WebSocket connection unexpectedly closed!";
+                console.log("Close event code: ", event.code, "Reason: ", event.reason);
+            };
+        }
+
+        function updateMarkers(data) {
+            // Remove markers for users not in the current data set
+            var userIds = data.map(location => location.userId);
+            Object.keys(markers).forEach(userId => {
+                if (!userIds.includes(userId)) {
+                    map.removeLayer(markers[userId]);
+                    delete markers[userId];
+                }
+            });
+
+            // Update or add markers for users in the current data set
+            data.forEach(function (location) {
+                var lat = location.latitude;
+                var lon = location.longitude;
+                var userId = location.userId;
+                if (markers[userId]) {
+                    markers[userId].setLatLng([lat, lon]);
+                } else {
+                    markers[userId] = L.circleMarker([lat, lon], { color: 'green' }).addTo(map);
+                }
+            });
+        }
+
+        // Attempt to connect WebSocket on page load
+        connectWebSocket();
+
+        // Periodically fetch other users' locations
+        setInterval(function () {
+            if (socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({ action: 'fetchLocations' }));
+            }
+        }, 1000);
+    </script>
+</section>
+</body>
+</html>

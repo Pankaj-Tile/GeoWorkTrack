@@ -36,6 +36,7 @@ public class AdminController {
        @Autowired
     private GeofenceService geofenceService;
 
+
     @ModelAttribute
 	public void addCommonData(Model model, Principal principal) {
 		String email = principal.getName();
@@ -66,6 +67,13 @@ public class AdminController {
         model.addAttribute("geofence", new Geofence());
         return "admin/geofence_form";
     }
+
+    @RequestMapping("/geofenceView/{id}")
+     public String viewGeofence(@PathVariable("id") Long id, Model model) { 
+        Geofence geofence = geofenceService.getGeofenceById(id); model.addAttribute("geofence", geofence); 
+        return "admin/geofenceView"; 
+    }
+    
 
     @PostMapping("/saveGeofence")
     public String saveGeofence(@ModelAttribute Geofence geofence, Principal principal,
