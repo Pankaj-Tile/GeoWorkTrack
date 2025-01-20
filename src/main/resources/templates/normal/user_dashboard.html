@@ -15,7 +15,7 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h1 class="text-center mt-3" th:text="${user.username}"></h1>
+                <h1 class="text-center mt-3" th:text="${user.username}" id="username"></h1>
                 <div id="statusMessage" style="color: red;"></div>
                 <div id="map" style="height: 400px;"></div>
                 <button id="toggleLocation" style="padding: 10px 20px; font-size: 16px;">Start Sharing Location</button>
@@ -119,7 +119,7 @@
                     className: 'geofence-label',
                     html: name,
                     iconSize: [100, 24], // Adjust size based on text length
-                    iconAnchor: [50, 12] // Center the label
+                    iconAnchor: [50, -25] // Center the label
                 })
             }).addTo(map);
 
@@ -162,7 +162,9 @@
                         icon: "warning",
                     });
                 } else {
-                    updateMarkers(data); // Update the map with location data
+                    // updateMarkers(data);
+                    console.log("You are in right place")
+                     // Update the map with location data
                 }
             };
             socket.onerror = function (error) {
@@ -213,10 +215,15 @@
                 var lon = position.coords.longitude;
                 if (!userMarker) {
                     userMarker = L.circleMarker([lat, lon], { color: 'blue' }).addTo(map);
-                    map.setView([lat, lon], 13);
+                    userMarker.bindTooltip(document.getElementById("username").textContent).addTo(map); // Add a tooltip with the username
+                    console.log(document.getElementById("username").textContent);
                 } else {
                     userMarker.setLatLng([lat, lon]);
+                    userMarker.bindTooltip(document.getElementById("username").textContent).addTo(map); // Add a tooltip with the username                    console.log(document.getElementById("username").textContent);
+                    console.log(document.getElementById("username").textContent);
                 }
+
+
                 var locationData = {
                     userId: userId,
                     latitude: lat,
@@ -259,17 +266,21 @@ function stopSharingLocation() {
 }
 
 
-        function updateMarkers(data) {
-            data.forEach(function (location) {
-                var lat = location.latitude;
-                var lon = location.longitude;
-                if (!userMarker) {
-                    userMarker = L.circleMarker([lat, lon], { color: 'green' }).addTo(map);
-                } else {
-                    userMarker.setLatLng([lat, lon]);
-                }
-            });
-        }
+// function updateMarkers(data) {
+//     var userId = [[${user.userId}]];
+//     data.forEach(function (location) {
+//         var lat = location.latitude;
+//         var lon = location.longitude;
+//         if (location.userId === userId) {
+//             if (!userMarker) {
+//                 userMarker = L.circleMarker([lat, lon], { color: 'green' }).addTo(map);
+//             } else {
+//                 userMarker.setLatLng([lat, lon]);
+//             }
+//         }
+//     });
+// }
+
 
         // Attempt to connect WebSocket on page load
         connectWebSocket();

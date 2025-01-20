@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Pageable;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.smart.dao.GeofenceRepository;
 import com.smart.dao.GeofenceService;
 import com.smart.dao.UserRepository;
+import com.smart.dao.UserService;
 import com.smart.entity.Geofence;
 import com.smart.entity.User;
 
@@ -35,7 +39,8 @@ public class AdminController {
     private GeofenceRepository geofenceRepository;
        @Autowired
     private GeofenceService geofenceService;
-
+    @Autowired
+    private UserService userService;
 
     @ModelAttribute
 	public void addCommonData(Model model, Principal principal) {
@@ -44,6 +49,7 @@ public class AdminController {
 		User user = this.repository.getUserByUserName(email);
 		System.out.println("User : " + user);
 		model.addAttribute("user", user);
+        
 	}
 
 
@@ -70,7 +76,10 @@ public class AdminController {
 
     @RequestMapping("/geofenceView/{id}")
      public String viewGeofence(@PathVariable("id") Long id, Model model) { 
-        Geofence geofence = geofenceService.getGeofenceById(id); model.addAttribute("geofence", geofence); 
+        Geofence geofence = geofenceService.getGeofenceById(id);
+        model.addAttribute("geofence", geofence); 
+        List<User> users=userService.getAllUsers();
+        model.addAttribute("users", users);
         return "admin/geofenceView"; 
     }
     

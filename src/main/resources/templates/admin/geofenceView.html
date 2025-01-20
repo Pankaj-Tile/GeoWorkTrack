@@ -1,93 +1,133 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="admin/base::layout(~{::section})">
-<head>
-    <meta charset="ISO-8859-1">
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="admin/base::layout(~{::section})"
+>
+  <head>
+    <meta charset="ISO-8859-1" />
     <title>Geofence Details</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-</head>
-<body>
-<section>
-    <div class="card">
+  </head>
+  <body>
+    <section>
+      <div class="card">
         <div class="card-body">
-            <h1 class="text-center mt-3" th:text="${user.username}"></h1>
-            <div id="statusMessage" style="color: red;"></div>
-            <div id="map" style="height: 400px;"></div>
+          <h1 class="text-center mt-3" th:text="${user.username}"></h1>
+          <div id="statusMessage" style="color: red"></div>
+          <div id="map" style="height: 400px"></div>
         </div>
+      </div>
+      <h1>Geofence Details</h1>
+      <table>
+        <tr>
+          <th>Geofence Place</th>
+          <td th:text="${geofence.geofenceplace}"></td>
+        </tr>
+        <tr>
+          <th>Latitude</th>
+          <td th:text="${geofence.latitude}"></td>
+        </tr>
+        <tr>
+          <th>Longitude</th>
+          <td th:text="${geofence.longitude}"></td>
+        </tr>
+        <tr>
+          <th>Radius</th>
+          <td th:text="${geofence.radius}"></td>
+        </tr>
+        <tr>
+          <th>Office Hours Start</th>
+          <td th:text="${geofence.officeHoursStart}"></td>
+        </tr>
+        <tr>
+          <th>Office Hours End</th>
+          <td th:text="${geofence.officeHoursEnd}"></td>
+        </tr>
+        <tr>
+          <th>Latitude A</th>
+          <td th:text="${geofence.latitudeA}"></td>
+        </tr>
+        <tr>
+          <th>Longitude A</th>
+          <td th:text="${geofence.longitudeA}"></td>
+        </tr>
+        <tr>
+          <th>Latitude B</th>
+          <td th:text="${geofence.latitudeB}"></td>
+        </tr>
+        <tr>
+          <th>Longitude B</th>
+          <td th:text="${geofence.longitudeB}"></td>
+        </tr>
+        <tr>
+          <th>Latitude C</th>
+          <td th:text="${geofence.latitudeC}"></td>
+        </tr>
+        <tr>
+          <th>Longitude C}</th>
+          <td th:text="${geofence.longitudeC}"></td>
+        </tr>
+        <tr>
+          <th>Latitude D</th>
+          <td th:text="${geofence.latitudeD}"></td>
+        </tr>
+        <tr>
+          <th>Longitude D}</th>
+          <td th:text="${geofence.longitudeD}"></td>
+        </tr>
+      </table>
+      <div
+        id="geofencePlace"
+        th:text="${geofence.geofenceplace}"
+        style="display: none"
+      ></div>
+<div>
+      <h1>User Details</h1>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Role</th>
+            <th>Post</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            th:each="user : ${users}"
+            th:data-id="${user.userId}"
+            th:data-username="${user.username}"
+            th:data-email="${user.email}"
+            th:data-department="${user.department}"
+            th:data-role="${user.role}"
+            th:data-post="${user.post}"
+          >
+            <td th:text="${user.userId}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.department}"></td>
+            <td th:text="${user.role}"></td>
+            <td th:text="${user.post}"></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <h1>Geofence Details</h1>
-    <table>
-        <tr>
-            <th>Geofence Place</th>
-            <td th:text="${geofence.geofenceplace}"></td>
-        </tr>
-        <tr>
-            <th>Latitude</th>
-            <td th:text="${geofence.latitude}"></td>
-        </tr>
-        <tr>
-            <th>Longitude</th>
-            <td th:text="${geofence.longitude}"></td>
-        </tr>
-        <tr>
-            <th>Radius</th>
-            <td th:text="${geofence.radius}"></td>
-        </tr>
-        <tr>
-            <th>Office Hours Start</th>
-            <td th:text="${geofence.officeHoursStart}"></td>
-        </tr>
-        <tr>
-            <th>Office Hours End</th>
-            <td th:text="${geofence.officeHoursEnd}"></td>
-        </tr>
-        <tr>
-            <th>Latitude A</th>
-            <td th:text="${geofence.latitudeA}"></td>
-        </tr>
-        <tr>
-            <th>Longitude A</th>
-            <td th:text="${geofence.longitudeA}"></td>
-        </tr>
-        <tr>
-            <th>Latitude B</th>
-            <td th:text="${geofence.latitudeB}"></td>
-        </tr>
-        <tr>
-            <th>Longitude B</th>
-            <td th:text="${geofence.longitudeB}"></td>
-        </tr>
-        <tr>
-            <th>Latitude C</th>
-            <td th:text="${geofence.latitudeC}"></td>
-        </tr>
-        <tr>
-            <th>Longitude C}</th>
-            <td th:text="${geofence.longitudeC}"></td>
-        </tr>
-        <tr>
-            <th>Latitude D</th>
-            <td th:text="${geofence.latitudeD}"></td>
-        </tr>
-        <tr>
-            <th>Longitude D}</th>
-            <td th:text="${geofence.longitudeD}"></td>
-        </tr>
-    </table>
-    <div id="geofencePlace" th:text="${geofence.geofenceplace}" style="display:none;"></div>
-
-    <script>
-        var latitude = /*[[${geofence.latitude}]]*/ 19.9975;
-        var longitude = /*[[${geofence.longitude}]]*/ 73.7898;
-        var latitudeA = /*[[${geofence.latitudeA}]]*/ 19.9980;
-        var longitudeA = /*[[${geofence.longitudeA}]]*/ 73.7890;
-        var latitudeB = /*[[${geofence.latitudeB}]]*/ 19.9980;
-        var longitudeB = /*[[${geofence.longitudeB}]]*/ 73.7906;
-        var latitudeC = /*[[${geofence.latitudeC}]]*/ 19.9970;
-        var longitudeC = /*[[${geofence.longitudeC}]]*/ 73.7906;
-        var latitudeD = /*[[${geofence.latitudeD}]]*/ 19.9970;
-        var longitudeD = /*[[${geofence.longitudeD}]]*/ 73.7890;
+      <script>
+        var latitude = [[${geofence.latitude}]];
+        var longitude = [[${geofence.longitude}]];
+        var latitudeA = [[${geofence.latitudeA}]];
+        var longitudeA = [[${geofence.longitudeA}]];
+        var latitudeB = [[${geofence.latitudeB}]];
+        var longitudeB = [[${geofence.longitudeB}]];
+        var latitudeC = [[${geofence.latitudeC}]];
+        var longitudeC = [[${geofence.longitudeC}]];
+        var latitudeD = [[${geofence.latitudeD}]];
+        var longitudeD = [[${geofence.longitudeD}]];
         var geofencePlace = document.getElementById('geofencePlace').textContent;
 
         var map = L.map('map').setView([latitude, longitude], 13); // Initialize map
@@ -154,16 +194,25 @@
             });
 
             // Update or add markers for users in the current data set
-            data.forEach(function (location) {
-                var lat = location.latitude;
-                var lon = location.longitude;
-                var userId = location.userId;
-                if (markers[userId]) {
-                    markers[userId].setLatLng([lat, lon]);
-                } else {
-                    markers[userId] = L.circleMarker([lat, lon], { color: 'green' }).addTo(map);
-                }
-            });
+            // Update or add markers for users in the current data set
+           // Update or add markers for users in the current data set
+data.forEach(function (location) {
+    var lat = location.latitude;
+    var lon = location.longitude;
+    var userId = location.userId;
+    
+    // Find the username based on the userId
+    var username = document.querySelector(`[data-id="${userId}"]`).textContent;
+    
+    if (markers[userId]) {
+        markers[userId].setLatLng([lat, lon]);
+        markers[userId].setPopupContent(username); // Update the popup content with the username
+    } else {
+        markers[userId] = L.circleMarker([lat, lon], { color: 'green' }).addTo(map);
+        markers[userId].bindPopup(username); // Add a popup with the username
+    }
+});
+
         }
 
         // Attempt to connect WebSocket on page load
@@ -175,7 +224,7 @@
                 socket.send(JSON.stringify({ action: 'fetchLocations' }));
             }
         }, 1000);
-    </script>
-</section>
-</body>
+      </script>
+    </section>
+  </body>
 </html>
