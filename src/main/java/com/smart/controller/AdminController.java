@@ -21,10 +21,12 @@ import java.util.Optional;
 
 import com.smart.dao.GeofenceRepository;
 import com.smart.dao.GeofenceService;
+import com.smart.dao.UserHistoryService;
 import com.smart.dao.UserRepository;
 import com.smart.dao.UserService;
 import com.smart.entity.Geofence;
 import com.smart.entity.User;
+import com.smart.entity.UserHistory;
 
 import java.security.Principal;
 
@@ -66,6 +68,22 @@ public class AdminController {
 	public String geolist(){
 		return "admin/geofence_list";
 	}
+    @RequestMapping("/emplist")
+	public String emplist(Model model){
+        List<User> users=userService.getAllUsers();
+        model.addAttribute("users", users);
+		return "admin/Emp_List";
+	}
+
+     @Autowired
+    private UserHistoryService userHistoryService;
+    @RequestMapping("/UserHistoryView/{id}")
+    public String UserHistoryView(@PathVariable("id") Integer id, Model model) { 
+      
+        List<UserHistory> userHistories = userHistoryService.getAllEntriesForUserId(id);
+        model.addAttribute("userHistories", userHistories);
+       return "admin/Emp_Work"; 
+   }
 
 
 	@RequestMapping("/createGeofence")
