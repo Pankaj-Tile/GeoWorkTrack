@@ -71,8 +71,7 @@
 	<div class="sidebar mt-2">
 		<span onclick="toggleSidebar()" class="crossBtn">&times;</span> 
 		<a th:href="@{/user/index}" class="item"><i class="fas fa-home"></i>Home</a>
-		<a th:href="@{/user/history}" class="item"><i class="fas fa-id-card-alt"></i> User history</a> 
-		<a th:href="@{/user/profile}" class="item"><i class="fas fa-user-circle"></i> Your Profile</a> 
+		<a th:href="@{/user/profile/{userId}(userId=${user.userId})}" class="item"><i class="fas fa-user-circle"></i> Your Profile</a>
 		<a  th:href="@{/user/settings}" class="item"><i class="fas fa-user-cog"></i> Setting Update</a>
 		<a th:href="@{/logout}" class="item"><i class="fas fa-sign-out-alt"></i> Logout</a>
 		<div class="divider"></div>

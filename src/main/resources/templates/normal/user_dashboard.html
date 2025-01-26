@@ -1,298 +1,383 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/base::layout(~{::section})">
-<head>
-    <meta charset="ISO-8859-1">
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="normal/base::layout(~{::section})"
+>
+  <head>
+    <meta charset="ISO-8859-1" />
     <title>This is the About</title>
     <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <!-- SweetAlert CSS and JS -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-</head>
-<body>
-<section>
-    <div class="container">
+  </head>
+  <body>
+    <section>
+      <div class="container">
         <div class="card">
-            <div class="card-body">
-                <h1 class="text-center mt-3" th:text="${user.username}" id="username"></h1>
-                <div id="statusMessage" style="color: red;"></div>
-                <div id="map" style="height: 400px;"></div>
-                <button id="toggleLocation" style="padding: 10px 20px; font-size: 16px;">Start Sharing Location</button>
-            </div>
+          <div class="card-body">
+            <h1
+              class="text-center mt-3"
+              th:text="${user.username}"
+              id="username"
+            ></h1>
+            <div id="statusMessage" style="color: red"></div>
+            <div id="map" style="height: 400px"></div>
+            <button
+              id="toggleLocation"
+              style="padding: 10px 20px; font-size: 16px"
+            >
+              Start Sharing Location
+            </button>
+          </div>
         </div>
         <!-- Convert geofences list to JSON and embed it in a data attribute -->
-    <table border="1">
-        <thead>
+        <table border="1">
+          <thead>
             <tr>
-                <th>Name</th>
-                <th>Latitude</th>
-                <th>Longitude</th>
-                <th>Radius</th>
-                <th>LatitudeA</th>
-                <th>LongitudeA</th>
-                <th>LatitudeB</th>
-                <th>LongitudeB</th>
-                <th>LatitudeC</th>
-                <th>LongitudeC</th>
-                <th>LatitudeD</th>
-                <th>LongitudeD</th>
+              <th>Name</th>
+              <th>Latitude</th>
+              <th>Longitude</th>
+              <th>Radius</th>
+              <th>LatitudeA</th>
+              <th>LongitudeA</th>
+              <th>LatitudeB</th>
+              <th>LongitudeB</th>
+              <th>LatitudeC</th>
+              <th>LongitudeC</th>
+              <th>LatitudeD</th>
+              <th>LongitudeD</th>
             </tr>
-        </thead>
-        <tbody>
-            <tr th:each="geofence : ${geofences}"
-                th:data-name="${geofence.geofenceplace}"
-                th:data-latitude="${geofence.latitude}"
-                th:data-longitude="${geofence.longitude}"
-                th:data-radius="${geofence.radius}"
-                th:data-latitudeA="${geofence.latitudeA}"
-                th:data-longitudeA="${geofence.longitudeA}"
-                th:data-latitudeB="${geofence.latitudeB}"
-                th:data-longitudeB="${geofence.longitudeB}"
-                th:data-latitudeC="${geofence.latitudeC}"
-                th:data-longitudeC="${geofence.longitudeC}"
-                th:data-latitudeD="${geofence.latitudeD}"
-                th:data-longitudeD="${geofence.longitudeD}">
-                <td th:text="${geofence.geofenceplace}"></td>
-                <td th:text="${geofence.latitude}"></td>
-                <td th:text="${geofence.longitude}"></td>
-                <td th:text="${geofence.radius}"></td>
-                <td th:text="${geofence.latitudeA}"></td>
-                <td th:text="${geofence.longitudeA}"></td>
-                <td th:text="${geofence.latitudeB}"></td>
-                <td th:text="${geofence.longitudeB}"></td>
-                <td th:text="${geofence.latitudeC}"></td>
-                <td th:text="${geofence.longitudeC}"></td>
-                <td th:text="${geofence.latitudeD}"></td>
-                <td th:text="${geofence.longitudeD}"></td>
+          </thead>
+          <tbody>
+            <tr
+              th:each="geofence : ${geofences}"
+              th:data-name="${geofence.geofenceplace}"
+              th:data-latitude="${geofence.latitude}"
+              th:data-longitude="${geofence.longitude}"
+              th:data-radius="${geofence.radius}"
+              th:data-latitudeA="${geofence.latitudeA}"
+              th:data-longitudeA="${geofence.longitudeA}"
+              th:data-latitudeB="${geofence.latitudeB}"
+              th:data-longitudeB="${geofence.longitudeB}"
+              th:data-latitudeC="${geofence.latitudeC}"
+              th:data-longitudeC="${geofence.longitudeC}"
+              th:data-latitudeD="${geofence.latitudeD}"
+              th:data-longitudeD="${geofence.longitudeD}"
+            >
+              <td th:text="${geofence.geofenceplace}"></td>
+              <td th:text="${geofence.latitude}"></td>
+              <td th:text="${geofence.longitude}"></td>
+              <td th:text="${geofence.radius}"></td>
+              <td th:text="${geofence.latitudeA}"></td>
+              <td th:text="${geofence.longitudeA}"></td>
+              <td th:text="${geofence.latitudeB}"></td>
+              <td th:text="${geofence.longitudeB}"></td>
+              <td th:text="${geofence.latitudeC}"></td>
+              <td th:text="${geofence.longitudeC}"></td>
+              <td th:text="${geofence.latitudeD}"></td>
+              <td th:text="${geofence.longitudeD}"></td>
             </tr>
-        </tbody>
-    </table>
-    </div>
+          </tbody>
+        </table>
+      
+       
+      <form id="UserHistory" action="/user/saveHistory" method="post">
+        <label for="userId">User ID:</label>
+        <input id="userId" name="userId" type="number" th:value="${user.userId}" required>
+       
+        <label for="username">Username:</label>
+        <input id="userName" name="userName" th:value="${user.username}" type="text">
+    
+        <label for="geofenceId">Geofence ID:</label>
+<input id="geofenceId" name="geofenceId" type="number" value="0">
 
-    <script th:inline="javascript">
+<label for="geofenceName">Geofence Name:</label>
+<input id="geofenceName" name="geofenceName" type="text" value="Not Implemented">
+
+        <input id="present" name="present" type="hidden" value="true">
+        <button id="saveHistory" type="submit">Submit</button>
+    </form>
+
+      <script th:inline="javascript">
         // Inject the geofence place properly
-        var firstGeofencePlace = /*[[${geofences[0].geofenceplace}]]*/ 'default value';
+        var firstGeofencePlace =
+          /*[[${geofences[0].geofenceplace}]]*/ "default value";
         var geofenceCount = /*[[${geofenceCount}]]*/ 0;
-        console.log('First Geofence Place:', firstGeofencePlace);
-        console.log('c',geofenceCount);
-    </script>
+        console.log("First Geofence Place:", firstGeofencePlace);
+        console.log("c", geofenceCount);
+      </script>
 
-    <script >
-        
+      <script>
 
 
-        var map = L.map('map').setView([19.9975, 73.7898], 13); // Initialize map
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-        }).addTo(map);
 
-        var userMarker;
-        var userId = [[${user.userId}]]; // Thymeleaf variable
-        console.log(userId);
-        var watchId;
-        var isSharingLocation = false;
-        var socket;
-        var toggleButton = document.getElementById('toggleLocation');
-        var statusMessage = document.getElementById('statusMessage');
-        var socketConnectionAttempted = false;
+                var map = L.map('map').setView([19.9975, 73.7898], 13); // Initialize map
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                }).addTo(map);
 
-         // Iterate over each geofence row in the table
-         document.querySelectorAll("tbody tr").forEach(row => {
-            // Extract data from row attributes
-            const name = row.getAttribute("data-name");
-            const latitude = parseFloat(row.getAttribute("data-latitude"));
-            const longitude = parseFloat(row.getAttribute("data-longitude"));
-            const radius = parseFloat(row.getAttribute("data-radius"));
-            
-            // Create the circle for the geofence's main location
-            L.circle([latitude, longitude], {
-                color: 'red',
-                fillColor: '#f03',
-                fillOpacity: 0.5,
-                radius: radius
-            }).addTo(map);
+                var userMarker;
+                var userId = [[${user.userId}]]; // Thymeleaf variable
+                console.log(userId);
+                var watchId;
+                var isSharingLocation = false;
+                var socket;
+                var toggleButton = document.getElementById('toggleLocation');
+                var statusMessage = document.getElementById('statusMessage');
+                var socketConnectionAttempted = false;
 
-            // Add a text label at the geofence location
-            var label = L.marker([latitude, longitude], {
-                icon: L.divIcon({
-                    className: 'geofence-label',
-                    html: name,
-                    iconSize: [100, 24], // Adjust size based on text length
-                    iconAnchor: [50, -25] // Center the label
-                })
-            }).addTo(map);
+                 // Iterate over each geofence row in the table
+                 document.querySelectorAll("tbody tr").forEach(row => {
+                    // Extract data from row attributes
+                    const name = row.getAttribute("data-name");
+                    const latitude = parseFloat(row.getAttribute("data-latitude"));
+                    const longitude = parseFloat(row.getAttribute("data-longitude"));
+                    const radius = parseFloat(row.getAttribute("data-radius"));
 
-            // Extract and create polygon bounds for the geofence's area
-            const latitudeA = parseFloat(row.getAttribute("data-latitudeA"));
-            const longitudeA = parseFloat(row.getAttribute("data-longitudeA"));
-            const latitudeB = parseFloat(row.getAttribute("data-latitudeB"));
-            const longitudeB = parseFloat(row.getAttribute("data-longitudeB"));
-            const latitudeC = parseFloat(row.getAttribute("data-latitudeC"));
-            const longitudeC = parseFloat(row.getAttribute("data-longitudeC"));
-            const latitudeD = parseFloat(row.getAttribute("data-latitudeD"));
-            const longitudeD = parseFloat(row.getAttribute("data-longitudeD"));
+                    // Create the circle for the geofence's main location
+                    L.circle([latitude, longitude], {
+                        color: 'red',
+                        fillColor: '#f03',
+                        fillOpacity: 0.5,
+                        radius: radius
+                    }).addTo(map);
 
-            // Add polygon representing the bounding area
-            var bounds = [
-                [latitudeA, longitudeA],
-                [latitudeB, longitudeB],
-                [latitudeC, longitudeC],
-                [latitudeD, longitudeD]
-            ];
-            L.polygon(bounds, {color: 'blue'}).addTo(map);
-        });
+                    // Add a text label at the geofence location
+                    var label = L.marker([latitude, longitude], {
+                        icon: L.divIcon({
+                            className: 'geofence-label',
+                            html: name,
+                            iconSize: [100, 24], // Adjust size based on text length
+                            iconAnchor: [50, -25] // Center the label
+                        })
+                    }).addTo(map);
 
-        function connectWebSocket() {
-            // Initialize WebSocket
-            socket = new WebSocket("ws://localhost:8080/ws");
-            socket.onopen = function () {
-                console.log("WebSocket connection opened");
-                statusMessage.textContent = "WebSocket connection successful!";
-                socketConnectionAttempted = true;
-            };
-            socket.onmessage = function (event) {
-                console.log("Message received from WebSocket:", event.data);
-                var data = JSON.parse(event.data);
-                if (data.message) {
-                    // Display SweetAlert message
-                    swal({
-                        title: "Alert",
-                        text: data.message,
-                        icon: "warning",
+                    // Extract and create polygon bounds for the geofence's area
+                    const latitudeA = parseFloat(row.getAttribute("data-latitudeA"));
+                    const longitudeA = parseFloat(row.getAttribute("data-longitudeA"));
+                    const latitudeB = parseFloat(row.getAttribute("data-latitudeB"));
+                    const longitudeB = parseFloat(row.getAttribute("data-longitudeB"));
+                    const latitudeC = parseFloat(row.getAttribute("data-latitudeC"));
+                    const longitudeC = parseFloat(row.getAttribute("data-longitudeC"));
+                    const latitudeD = parseFloat(row.getAttribute("data-latitudeD"));
+                    const longitudeD = parseFloat(row.getAttribute("data-longitudeD"));
+
+                    // Add polygon representing the bounding area
+                    var bounds = [
+                        [latitudeA, longitudeA],
+                        [latitudeB, longitudeB],
+                        [latitudeC, longitudeC],
+                        [latitudeD, longitudeD]
+                    ];
+                    L.polygon(bounds, {color: 'blue'}).addTo(map);
+                });
+
+                function connectWebSocket() {
+                    // Initialize WebSocket
+                    socket = new WebSocket("ws://localhost:8080/ws");
+                    socket.onopen = function () {
+                        console.log("WebSocket connection opened");
+                        statusMessage.textContent = "WebSocket connection successful!";
+                        socketConnectionAttempted = true;
+                    };
+                    socket.onmessage = function (event) {
+                        console.log("Message received from WebSocket:", event.data);
+                        var data = JSON.parse(event.data);
+                        if (data.message) {
+                            // Display SweetAlert message
+                            swal({
+                                title: "Alert",
+                                text: data.message,
+                                icon: "warning",
+                            });
+                        }
+                       
+                    };
+                    socket.onerror = function (error) {
+                        console.error("WebSocket error:", error);
+                        statusMessage.textContent = "Error: WebSocket connection failed!";
+                    };
+                    socket.onclose = function (event) {
+                        console.log("WebSocket connection closed", event);
+                        if (event.wasClean) {
+                            statusMessage.textContent = "WebSocket closed cleanly.";
+                        } else {
+                            statusMessage.textContent = "WebSocket connection unexpectedly closed!";
+                        }
+                        console.log("Close event code: ", event.code, "Reason: ", event.reason);
+                    };
+                }
+
+                function checkWebSocketStateAndSend(data) {
+                    if (!socketConnectionAttempted) {
+                        console.warn("WebSocket has not been initialized. Attempting to connect...");
+                        statusMessage.textContent = "Attempting to connect WebSocket...";
+                        connectWebSocket();
+                    } else if (socket.readyState === WebSocket.OPEN) {
+                        console.log("Sending data:", data);
+                        socket.send(JSON.stringify(data));
+                    } else if (socket.readyState === WebSocket.CONNECTING) {
+                        console.warn("WebSocket is still connecting. Please wait...");
+                        statusMessage.textContent = "WebSocket connecting...";
+                    } else {
+                        console.error("WebSocket is not open. Current state:", socket.readyState);
+                        statusMessage.textContent = "WebSocket connection not open.";
+                    }
+                }
+
+                toggleButton.addEventListener('click', function () {
+                 
+                    if (isSharingLocation) {
+                        stopSharingLocation();
+                        // document.getElementById('UserHistory').submit();
+                        const formData = new FormData(document.getElementById('UserHistory'));
+
+                    // Convert FormData to URL-encoded string
+                    const urlEncodedData = new URLSearchParams(formData).toString();
+
+                    fetch('/user/saveHistory', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: urlEncodedData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log('Success:', data);
+                        // Do something with the success response (e.g., show a confirmation message)
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        // Handle the error (e.g., show an error message)
                     });
-                } else {
-                    // updateMarkers(data);
-                    console.log("You are in right place")
-                     // Update the map with location data
-                }
-            };
-            socket.onerror = function (error) {
-                console.error("WebSocket error:", error);
-                statusMessage.textContent = "Error: WebSocket connection failed!";
-            };
-            socket.onclose = function (event) {
-                console.log("WebSocket connection closed", event);
-                if (event.wasClean) {
-                    statusMessage.textContent = "WebSocket closed cleanly.";
-                } else {
-                    statusMessage.textContent = "WebSocket connection unexpectedly closed!";
-                }
-                console.log("Close event code: ", event.code, "Reason: ", event.reason);
-            };
-        }
+                    document.getElementById('present').value = 'true';
 
-        function checkWebSocketStateAndSend(data) {
-            if (!socketConnectionAttempted) {
-                console.warn("WebSocket has not been initialized. Attempting to connect...");
-                statusMessage.textContent = "Attempting to connect WebSocket...";
-                connectWebSocket();
-            } else if (socket.readyState === WebSocket.OPEN) {
-                console.log("Sending data:", data);
-                socket.send(JSON.stringify(data));
-            } else if (socket.readyState === WebSocket.CONNECTING) {
-                console.warn("WebSocket is still connecting. Please wait...");
-                statusMessage.textContent = "WebSocket connecting...";
+                    } else {
+                        startSharingLocation();
+                        // document.getElementById('UserHistory').submit();
+                        // Attempt to connect WebSocket on page load
+                         
+                        const formData = new FormData(document.getElementById('UserHistory'));
+
+                    // Convert FormData to URL-encoded string
+                    const urlEncodedData = new URLSearchParams(formData).toString();
+
+                    fetch('/user/saveHistory', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: urlEncodedData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log('Success:', data);
+                        // Do something with the success response (e.g., show a confirmation message)
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        // Handle the error (e.g., show an error message)
+                    });
+                        document.getElementById('present').value = 'false';
+                        
+                     }
+                });
+
+                function startSharingLocation() {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    watchId = navigator.geolocation.watchPosition(function (position) {
+                        var lat = position.coords.latitude;
+                        var lon = position.coords.longitude;
+                        if (!userMarker) {
+                            userMarker = L.circleMarker([lat, lon], { color: 'blue' }).addTo(map);
+                            userMarker.bindTooltip(document.getElementById("username").textContent).addTo(map); // Add a tooltip with the username
+                            console.log(document.getElementById("username").textContent);
+                        } else {
+                            userMarker.setLatLng([lat, lon]);
+                            userMarker.bindTooltip(document.getElementById("username").textContent).addTo(map); // Add a tooltip with the username                    console.log(document.getElementById("username").textContent);
+                            console.log(document.getElementById("username").textContent);
+                        }
+
+
+                        var locationData = {
+                            userId: userId,
+                            latitude: lat,
+                            longitude: lon,
+                            timestamp: new Date().toISOString()
+                        };
+
+                        checkWebSocketStateAndSend(locationData); // Check WebSocket state before sending data
+                        
+                    }, function (error) {
+                        console.error("Error getting location: ", error.message);
+                        alert("Error getting location: " + error.message);
+                    }, {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    });
+                    isSharingLocation = true;
+                    toggleButton.textContent = 'Stop Sharing Location';
+                }, function (error) {
+                    alert("Location access denied: " + error.message);
+                });
             } else {
-                console.error("WebSocket is not open. Current state:", socket.readyState);
-                statusMessage.textContent = "WebSocket connection not open.";
+                alert("Geolocation is not available in this browser.");
             }
         }
 
-        toggleButton.addEventListener('click', function () {
-            if (isSharingLocation) {
-                stopSharingLocation();
-            } else {
-                startSharingLocation();
+        function stopSharingLocation() {
+            if (watchId) {
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
             }
-        });
-
-        function startSharingLocation() {
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            watchId = navigator.geolocation.watchPosition(function (position) {
-                var lat = position.coords.latitude;
-                var lon = position.coords.longitude;
-                if (!userMarker) {
-                    userMarker = L.circleMarker([lat, lon], { color: 'blue' }).addTo(map);
-                    userMarker.bindTooltip(document.getElementById("username").textContent).addTo(map); // Add a tooltip with the username
-                    console.log(document.getElementById("username").textContent);
-                } else {
-                    userMarker.setLatLng([lat, lon]);
-                    userMarker.bindTooltip(document.getElementById("username").textContent).addTo(map); // Add a tooltip with the username                    console.log(document.getElementById("username").textContent);
-                    console.log(document.getElementById("username").textContent);
-                }
-
-
-                var locationData = {
-                    userId: userId,
-                    latitude: lat,
-                    longitude: lon,
-                    timestamp: new Date().toISOString()
-                };
-                checkWebSocketStateAndSend(locationData); // Check WebSocket state before sending data
-            }, function (error) {
-                console.error("Error getting location: ", error.message);
-                alert("Error getting location: " + error.message);
-            }, {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0
-            });
-            isSharingLocation = true;
-            toggleButton.textContent = 'Stop Sharing Location';
-        }, function (error) {
-            alert("Location access denied: " + error.message);
-        });
-    } else {
-        alert("Geolocation is not available in this browser.");
-    }
-}
-
-function stopSharingLocation() {
-    if (watchId) {
-        navigator.geolocation.clearWatch(watchId);
-        watchId = null;
-    }
-    if (userMarker) {
-        map.removeLayer(userMarker); // Remove the user marker from the map
-        userMarker = null;
-    }
-    if (socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify({ action: 'removeLocation', userId: userId }));
-    }
-    isSharingLocation = false;
-    toggleButton.textContent = 'Start Sharing Location';
-}
-
-
-// function updateMarkers(data) {
-//     var userId = [[${user.userId}]];
-//     data.forEach(function (location) {
-//         var lat = location.latitude;
-//         var lon = location.longitude;
-//         if (location.userId === userId) {
-//             if (!userMarker) {
-//                 userMarker = L.circleMarker([lat, lon], { color: 'green' }).addTo(map);
-//             } else {
-//                 userMarker.setLatLng([lat, lon]);
-//             }
-//         }
-//     });
-// }
-
-
-        // Attempt to connect WebSocket on page load
-        connectWebSocket();
-
-        // Periodically fetch other users' locations
-        setInterval(function () {
+            if (userMarker) {
+                map.removeLayer(userMarker); // Remove the user marker from the map
+                userMarker = null;
+            }
             if (socket.readyState === WebSocket.OPEN) {
-                socket.send(JSON.stringify({ action: 'fetchLocations' }));
+                socket.send(JSON.stringify({ action: 'removeLocation', userId: userId }));
             }
-        }, 1000);
-    </script>
-</section>
+            isSharingLocation = false;
+            toggleButton.textContent = 'Start Sharing Location';
+        }
 
-</body>
+
+        // function updateMarkers(data) {
+        //     var userId = [[${user.userId}]];
+        //     data.forEach(function (location) {
+        //         var lat = location.latitude;
+        //         var lon = location.longitude;
+        //         if (location.userId === userId) {
+        //             if (!userMarker) {
+        //                 userMarker = L.circleMarker([lat, lon], { color: 'green' }).addTo(map);
+        //             } else {
+        //                 userMarker.setLatLng([lat, lon]);
+        //             }
+        //         }
+        //     });
+        // }
+
+
+                // Attempt to connect WebSocket on page load
+                connectWebSocket();
+
+                // Periodically fetch other users' locations
+                setInterval(function () {
+                    if (socket.readyState === WebSocket.OPEN) {
+                        socket.send(JSON.stringify({ action: 'fetchLocations' }));
+                    }
+                }, 1000);
+      </script>
+    </section>
+  </body>
 </html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="admin/base::layout(~{::section})">
+<head>
+<meta charset="ISO-8859-1">
+<title>This is Employee List</title>
+
+
+</head>
+<body>
+	<section>
+		<div>
+            <h1>User Details</h1>
+            <table border="1">
+              <thead>
+                <tr>
+                  <th>User ID</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Department</th>
+                  <th>Role</th>
+                  <th>Post</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  th:each="user : ${users}"
+                  th:data-id="${user.userId}"
+                  th:data-username="${user.username}"
+                  th:data-email="${user.email}"
+                  th:data-department="${user.department}"
+                  th:data-role="${user.role}"
+                  th:data-post="${user.post}"
+                >
+                  <td th:text="${user.userId}"></td>
+                  <td th:text="${user.username}"></td>
+                  <td th:text="${user.email}"></td>
+                  <td th:text="${user.department}"></td>
+                  <td th:text="${user.role}"></td>
+                  <td th:text="${user.post}"></td>
+                  <td>
+                    <form th:action="@{'/admin/UserHistoryView/{id}'(id=${user.userId})}" method="get">
+                        <button type="submit" class="btn btn-primary btn-sm">See History</button>
+                    </form>
+                </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+	</section>
+
+</body>
+</html>
