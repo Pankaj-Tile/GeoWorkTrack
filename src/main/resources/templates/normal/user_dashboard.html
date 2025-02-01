@@ -38,7 +38,11 @@
           </div>
         </div>
         <!-- Convert geofences list to JSON and embed it in a data attribute -->
-        <table border="1">
+        <div class="card mr-5 ml-3">
+            <div class="card-body">
+                <h1 class="text-center">All Geofences</h1>
+
+        <table border="1" class="table">
           <thead>
             <tr>
               <th>Name</th>
@@ -86,6 +90,10 @@
             </tr>
           </tbody>
         </table>
+
+            </div>
+        </div>
+
       
        
       <form id="UserHistory" action="/user/saveHistory" method="post">
