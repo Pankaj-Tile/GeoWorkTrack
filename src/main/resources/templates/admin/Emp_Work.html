@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/base::layout(~{::section})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="admin/base::layout(~{::section})">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +11,13 @@
       
 <section>
 
+    <div class="card mr-5 ml-3">
+        <div class="card-body">
+            <h1 class="text-center">Employee History</h1>
+
+
     <h1>User History</h1>
-    <table border="1">
+    <table border="1" class="table">
         <thead>
             <tr>
                 <th>History ID</th>
@@ -38,6 +43,9 @@
             </tr>
         </tbody>
     </table>
+
+    </div>
+</div>
     
 </section>
        
