@@ -7,6 +7,11 @@ body {
 .bg-primary {
 	background: #009688 !important;
 }
+.prag_h{
+	size: 20vh;
+
+
+}
 
 .banner {
 	width: 100%;
